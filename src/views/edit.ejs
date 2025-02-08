@@ -21,7 +21,7 @@
             </div>
         </div>
         <div role="main" class="ui-content">
-            <form action="/exam_db/computadoras/updateOne/<%= computadora.customId %>" method="POST">
+            <form action="/exam_db/computadoras/updateOne/<%= computadora.customId %>" method="POST" data-ajax="false">
                 <!-- Campo oculto para simular PUT -->
                 <input type="hidden" name="_method" value="PUT">
                 <div class="card">
@@ -40,11 +40,19 @@
                         <input type="number" name="price" id="txt-price" value="<%= computadora.price %>">
                         <label for="txt-stock">Stock</label>
                         <input type="number" name="stock" id="txt-stock" value="<%= computadora.stock %>">
-                        <button class="ui-btn ui-shadow">Actualizar</button>
+
+                        <label for="txt-utilizad">Utilidad</label>
+                        <input type="text" name="utilizad" id="txt-utilizad" value="<%= computadora.utilizad %>">
+
+                        <label for="txt-tipo_utilizad">Tipo de Utilidad</label>
+                        <input type="text" name="tipo_utilizad" id="txt-tipo_utilizad" value="<%= computadora.tipo_utilizad %>">
+
+                        <button class="ui-btn ui-shadow" type="submit">Actualizar</button>
                     </div>
                 </div>
             </form>
-            <form action="/exam_db/computadoras/deleteOne/<%= computadora.customId %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta computadora?');">
+            <form action="/exam_db/computadoras/deleteOne/<%= computadora.customId %>" method="POST" data-ajax="false" onsubmit="return confirm('¿Estás seguro de eliminar esta computadora?');">
+                <input type="hidden" name="_method" value="DELETE">
                 <button class="ui-btn ui-btn-icon-bottom ui-icon-delete" type="submit">
                     Eliminar
                 </button>

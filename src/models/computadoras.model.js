@@ -12,7 +12,8 @@ const computadoraSchema = new Schema({
     stock: Number,
     brand: String,
     model: String,
-    processor: String
+    processor: String,
+    utility: String
 }, {
     versionKey: false,
     timestamps: true

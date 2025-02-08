@@ -8,33 +8,52 @@
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <title>Computadoras</title>
     <script>
+        let ordenadoPorStock = false;
+        let ordenadoPorUtilidad = false;
+
         function ordenarPorStock() {
-            var items = $('.computadora'); //Declaro la variable items y aqui tomo los datos de la clase de las computadoras
-            items.sort(function(a, b) {
-                var stockA = parseFloat($(a).data('stock'));//Aqui obtiene los datos del primer valor y 
-                var stockB = parseFloat($(b).data('stock'));//en la segunda tomamos los datos de otro valor
-                return stockA - stockB;  //Aqui va a retornar los valores y muestra el stock de menor a mayor
-            });
-            $('#lista-computadoras').html(items);//Agarra el id de las laps que ya estan registradas
+            if (!ordenadoPorStock) {
+                let items = $('.computadora').detach();
+                items.sort(function(a, b) {
+                    return parseFloat($(a).data('stock')) - parseFloat($(b).data('stock'));
+                });
+                $('#lista-ordenada').empty().append(items).listview("refresh");
+                $('#lista-ordenada-container').show();
+                ordenadoPorStock = true;
+            } else {
+                $('#lista-ordenada-container').hide();
+                ordenadoPorStock = false;
+            }
+        }
+
+        function ordenarPorUtilidad() {
+            if (!ordenadoPorUtilidad) {
+                let items = $('.computadora').detach();
+                items.sort(function(a, b) {
+                    return parseFloat($(b).data('utilidad')) - parseFloat($(a).data('utilidad'));
+                });
+                $('#lista-ordenada').empty().append(items).listview("refresh");
+                $('#lista-ordenada-container').show();
+                ordenadoPorUtilidad = true;
+            } else {
+                $('#lista-ordenada-container').hide();
+                ordenadoPorUtilidad = false;
+            }
         }
     </script>
 </head>
 <body>
     <div data-role="page" id="computadoras">
-        <!-- Header -->
         <div data-role="header" style="overflow:hidden;">
             <h1>Computadoras Hueto</h1>
             <a href="#" data-icon="gear" class="ui-btn-right">Opciones</a>
         </div>
-        <!-- Navbar -->
         <div data-role="navbar">
             <ul>
                 <li><a href="#computadoras">Computadoras</a></li>
             </ul>
         </div>
-        <!-- Main Content -->
         <div role="main" class="ui-content">
-            <!-- Formulario para insertar computadoras -->
             <form action="/exam_db/computadoras/insert" method="POST">
                 <div class="card">
                     <div class="card-body">
@@ -52,18 +71,20 @@
                         <input type="number" name="price" id="txt_price">
                         <label for="txt_stock">Stock:</label>
                         <input type="number" name="stock" id="txt_stock">
+                        <label for="txt_utility">Utilidad:</label>
+                        <input type="text" name="utility" id="txt_utility">
                         <button class="ui-btn ui-shadow">Guardar</button>
                     </div>
                 </div>
             </form>
-
-            <!-- Botón para ordenar por stock -->
             <button onclick="ordenarPorStock()" class="ui-btn ui-shadow ui-btn-b ui-corner-all">Ordenar por Stock</button>
-
-            <!-- Lista de computadoras -->
+            <button onclick="ordenarPorUtilidad()" class="ui-btn ui-shadow ui-btn-b ui-corner-all">Ordenar por Utilidad</button>
+            <div id="lista-ordenada-container" style="display: none;">
+                <ul id="lista-ordenada" data-role="listview" data-inset="true"></ul>
+            </div>
             <ul id="lista-computadoras" data-role="listview" data-filter="true" data-filter-placeholder="Buscar computadoras..." data-inset="true">
                 <% computadoras.forEach(computadora => { %>
-                    <div class="computadora" data-utilidad="<%= computadora.price - computadora.cost %>" data-stock="<%= computadora.stock %>" data-role="collapsible" data-content-theme="false">
+                    <li class="computadora" data-utilidad="<%= computadora.price - computadora.cost %>" data-stock="<%= computadora.stock %>">
                         <h4><%= computadora.model %> - <%= computadora.brand %></h4>
                         <p>ID: <%= computadora.customId %></p>
                         <p>Procesador: <%= computadora.processor %></p>
@@ -72,13 +93,13 @@
                         <p>Costo: <%= computadora.cost %></p>
                         <p>Precio: <%= computadora.price %></p>
                         <p>Stock: <%= computadora.stock %></p>
+                        <p>Utilidad: <%= computadora.utility %></p>
                         <a href="/exam_db/computadoras/getOne/<%= computadora.customId %>" class="ui-btn ui-icon-edit ui-btn-icon-bottom">Editar</a>
                         <a href="/exam_db/computadoras/deleteOne/<%= computadora.customId %>" class="ui-btn ui-icon-delete ui-btn-icon-bottom">Eliminar</a>
-                    </div>
+                    </li>
                 <% }); %>
             </ul>
         </div>
-        <!-- Footer -->
         <div data-role="footer">
             <h4>Jose Francisco F.A 230417</h4>
         </div>

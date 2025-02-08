@@ -1,7 +1,5 @@
 import computadorasDao from '../dao/computadoras.dao.js';
-
 const computadorasController = {};
-
 // Obtener todas las computadoras
 computadorasController.getAll = (req, res) => {
     computadorasDao.getAll()
@@ -16,7 +14,6 @@ computadorasController.getAll = (req, res) => {
             });
         });
 };
-
 // Obtener una computadora por customId
 computadorasController.getOne = (req, res) => {
     computadorasDao.getOne(req.params.customId) // Cambié barcode por customId
@@ -31,7 +28,6 @@ computadorasController.getOne = (req, res) => {
             });
         });
 };
-
 // Insertar una nueva computadora
 computadorasController.insert = (req, res) => {
     console.log(req.body); // Verifica que los datos estén llegando correctamente
@@ -47,10 +43,26 @@ computadorasController.insert = (req, res) => {
             });
         });
 };
-
 // Actualizar una computadora
 computadorasController.updateOne = (req, res) => {
-    computadorasDao.updateOne(req.body, req.params.customId) // Cambié barcode por customId
+    // Extraer los datos de la solicitud
+    const { brand, model, processor, cost, price, stock, utility } = req.body;
+    const customId = req.params.customId;
+
+    // Preparar el objeto de actualización
+    const updatedFields = {
+        brand,
+        model,
+        processor,
+        cost,
+        price,
+        stock,
+        utility,  
+  
+    };
+
+    // Llamada al DAO para actualizar la computadora
+    computadorasDao.updateOne(updatedFields, customId)
         .then((result) => {
             res.json({
                 data: {
@@ -82,5 +94,4 @@ computadorasController.deleteOne = (req, res) => {
             });
         });
 };
-
 export default computadorasController;
