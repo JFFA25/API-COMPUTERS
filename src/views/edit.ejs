@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- jQueryMobile -->
+     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <title>Computadoras</title>
+</head>
+<body>
+    <div data-role="page" id="computadoras" data-theme="b">
+        <div data-role="header" style="overflow: hidden;">
+            <h1>Computadoras Hueto</h1>
+            <a href="#" data-icon="gear" class="ui-btn-right">Opciones</a>
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#computadoras">Computadoras</a></li>
+                </ul>
+            </div>
+        </div>
+        <div role="main" class="ui-content">
+            <form action="/exam_db/computadoras/updateOne/<%= computadora.customId %>" method="POST">
+                <!-- Campo oculto para simular PUT -->
+                <input type="hidden" name="_method" value="PUT">
+                <div class="card">
+                    <div class="card-body">
+                        <label for="txt-customId">ID</label>
+                        <input type="text" name="customId" id="txt-customId" value="<%= computadora.customId %>" readonly>
+                        <label for="txt-brand">Marca</label>
+                        <input type="text" name="brand" id="txt-brand" value="<%= computadora.brand %>">
+                        <label for="txt-model">Modelo</label>
+                        <input type="text" name="model" id="txt-model" value="<%= computadora.model %>">
+                        <label for="txt-processor">Procesador</label>
+                        <input type="text" name="processor" id="txt-processor" value="<%= computadora.processor %>">
+                        <label for="txt-cost">Costo</label>
+                        <input type="number" name="cost" id="txt-cost" value="<%= computadora.cost %>">
+                        <label for="txt-price">Precio</label>
+                        <input type="number" name="price" id="txt-price" value="<%= computadora.price %>">
+                        <label for="txt-stock">Stock</label>
+                        <input type="number" name="stock" id="txt-stock" value="<%= computadora.stock %>">
+                        <button class="ui-btn ui-shadow">Actualizar</button>
+                    </div>
+                </div>
+            </form>
+            <form action="/exam_db/computadoras/deleteOne/<%= computadora.customId %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta computadora?');">
+                <button class="ui-btn ui-btn-icon-bottom ui-icon-delete" type="submit">
+                    Eliminar
+                </button>
+            </form>
+        </div>
+        <div data-role="footer">
+        </div>
+    </div>
+</body>
+</html>
